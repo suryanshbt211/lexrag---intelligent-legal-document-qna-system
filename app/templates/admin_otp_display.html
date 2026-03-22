@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin OTP Display - Digital Lawyer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .otp-display-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .warning-banner {
+            background: #fff3cd;
+            color: #856404;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #ffeaa7;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+
+        .otp-box {
+            background: #f8f9fa;
+            border: 2px dashed #667eea;
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .otp-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .otp-code {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #667eea;
+            letter-spacing: 0.5rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        .username-info {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #bbdefb;
+            margin: 1rem 0;
+        }
+
+        .timer {
+            color: #666;
+            font-size: 0.9rem;
+            margin: 1rem 0;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .help-text {
+            color: #888;
+            font-size: 0.9rem;
+            margin-top: 2rem;
+            text-align: left;
+        }
+
+        .help-text ul {
+            margin-left: 1.5rem;
+        }
+
+        .help-text li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .email-info {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #bbdefb;
+            margin: 1rem 0;
+            text-align: center;
+        }
+        
+        .email-info strong {
+            color: #1565c0;
+        }
+    </style>
+</head>
+<body>
+    <div class="otp-display-container">
+        <div class="warning-banner">
+            ⚠️ <strong>DEVELOPMENT MODE</strong> - This page displays OTP for testing purposes only.
+            In production, OTP should be sent via secure channels (SMS, email, authenticator app).
+        </div>
+
+        <div class="logo">🔐</div>
+        <h1 class="title">Admin OTP Display</h1>
+        <p class="subtitle">
+            Use this OTP code to complete your admin login verification.
+        </p>
+
+        <div class="username-info">
+            <strong>Username:</strong> {{ username }}
+        </div>
+        
+        <div class="email-info">
+            <strong>📧 Email Address:</strong><br>
+            {{ admin_email }}
+        </div>
+
+        <div class="otp-box">
+            <div class="otp-label">Your One-Time Password:</div>
+            <div class="otp-code">{{ otp }}</div>
+        </div>
+
+        <div class="timer">
+            ⏰ This OTP expires in <span id="countdown">10:00</span>
+        </div>
+
+        <div class="action-buttons">
+            <a href="/admin/otp-verify" class="btn btn-primary">
+                Go to OTP Verification
+            </a>
+            <a href="/login" class="btn btn-secondary">
+                Back to Login
+            </a>
+        </div>
+
+        <div class="help-text">
+            <h4>🔐 How to use this OTP:</h4>
+            <ul>
+                <li>Copy the 6-digit code above</li>
+                <li>Go to the OTP verification page</li>
+                <li>Paste or type the code</li>
+                <li>Click "Verify OTP" to complete login</li>
+            </ul>
+            
+            <h4>📧 Email Delivery:</h4>
+            <ul>
+                <li>OTP has been sent to: {{ admin_email }}</li>
+                <li>Check your email inbox for the code</li>
+                <li>This display is for development/testing only</li>
+                <li>In production, OTP is delivered via email only</li>
+            </ul>
+            
+            <h4>⚠️ Security Notes:</h4>
+            <ul>
+                <li>OTP is valid for 10 minutes only</li>
+                <li>Do not share this code with anyone</li>
+                <li>This display is for development/testing only</li>
+                <li>In production, use email delivery for security</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Countdown timer
+        let timeLeft = 600; // 10 minutes in seconds
+        
+        function updateCountdown() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('countdown').textContent = 
+                `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            if (timeLeft <= 0) {
+                document.getElementById('countdown').textContent = 'Expired';
+                // Redirect to login when OTP expires
+                setTimeout(() => {
+                    window.location.href = '/login';
+                }, 2000);
+            } else {
+                timeLeft--;
+                setTimeout(updateCountdown, 1000);
+            }
+        }
+
+        // Start countdown
+        updateCountdown();
+
+        // Auto-refresh OTP every 30 seconds (for development)
+        setInterval(() => {
+            location.reload();
+        }, 30000);
+    </script>
+</body>
+</html>

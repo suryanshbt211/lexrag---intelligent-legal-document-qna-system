@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Digital Lawyer AI - Navigate Georgian Law with Confidence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* --- General Styles & Variables --- */
+      :root {
+        --primary-color: #2563eb;
+        --primary-hover: #1d4ed8;
+        --primary-light: #dbeafe;
+        --secondary-color: #f8fafc;
+        --accent-color: #7c3aed;
+        --accent-hover: #6d28d9;
+        --text-dark: #0f172a;
+        --text-medium: #475569;
+        --text-light: #64748b;
+        --background-color: #ffffff;
+        --border-color: #e2e8f0;
+        --border-light: #f1f5f9;
+        --success-color: #10b981;
+        --warning-color: #f59e0b;
+        --error-color: #ef4444;
+        --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1),
+          0 2px 4px -2px rgb(0 0 0 / 0.1);
+        --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+          0 4px 6px -4px rgb(0 0 0 / 0.1);
+        --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1),
+          0 8px 10px -6px rgb(0 0 0 / 0.1);
+        --font-family: "Inter", sans-serif;
+        --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: var(--font-family);
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        color: var(--text-dark);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        margin-top: 0;
+        line-height: 1.2;
+        font-weight: 700;
+      }
+
+      h1 {
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 800;
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      h2 {
+        font-size: clamp(2rem, 4vw, 3rem);
+        text-align: center;
+        margin-bottom: 3rem;
+        font-weight: 700;
+        color: var(--text-dark);
+      }
+
+      h3 {
+        font-size: clamp(1.25rem, 3vw, 1.5rem);
+        font-weight: 600;
+        color: var(--text-dark);
+      }
+
+      p {
+        font-size: 1.125rem;
+        color: var(--text-medium);
+        line-height: 1.7;
+      }
+
+      a {
+        text-decoration: none;
+        color: var(--primary-color);
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      a:hover {
+        color: var(--primary-hover);
+        transform: translateY(-1px);
+      }
+
+      /* --- Buttons --- */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 14px 28px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        position: relative;
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .btn::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transition: left 0.5s;
+      }
+
+      .btn:hover::before {
+        left: 100%;
+      }
+
+      .btn-primary {
+        background: var(--gradient-primary);
+        color: white;
+        box-shadow: var(--shadow-md);
+      }
+
+      a.btn-primary,
+      a.btn-primary:hover {
+        color: white;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-xl);
+      }
+
+      .btn-large {
+        padding: 18px 36px;
+        font-size: 1.125rem;
+        border-radius: 16px;
+      }
+
+      .btn-secondary {
+        background: var(--background-color);
+        color: var(--primary-color);
+        border: 2px solid var(--primary-color);
+      }
+
+      .btn-secondary:hover {
+        background: var(--primary-color);
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      /* --- Header & Navigation --- */
+      .header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 16px 0;
+        border-bottom: 1px solid var(--border-light);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 1.75rem;
+        font-weight: 800;
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        transition: all 0.3s ease;
+      }
+
+      .logo:hover {
+        transform: scale(1.05);
+      }
+
+      .nav-links {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        gap: 32px;
+        margin: 0;
+      }
+
+      .nav-links a:not(.btn) {
+        color: var(--text-medium);
+        font-weight: 500;
+        position: relative;
+        padding: 8px 0;
+      }
+
+      .nav-links a:not(.btn)::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--gradient-primary);
+        transition: width 0.3s ease;
+      }
+
+      .nav-links a:not(.btn):hover::after {
+        width: 100%;
+      }
+
+      .nav-links a.login-btn {
+        padding: 12px 24px;
+        border: 2px solid var(--border-color);
+        border-radius: 8px;
+        transition: all 0.3s ease;
+      }
+
+      .nav-links a.login-btn:hover {
+        border-color: var(--primary-color);
+        background: var(--primary-light);
+      }
+
+      .hamburger {
+        display: none;
+        cursor: pointer;
+        flex-direction: column;
+        gap: 4px;
+        padding: 8px;
+      }
+
+      .hamburger .line {
+        width: 24px;
+        height: 3px;
+        background: var(--gradient-primary);
+        border-radius: 2px;
+        transition: all 0.3s ease;
+      }
+
+      .hamburger:hover .line {
+        background: var(--primary-hover);
+      }
+
+      /* --- Hero Section --- */
+      .hero {
+        text-align: center;
+        padding: 120px 0;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(
+            circle at 30% 20%,
+            rgba(37, 99, 235, 0.1) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 70% 80%,
+            rgba(124, 58, 237, 0.1) 0%,
+            transparent 50%
+          );
+        pointer-events: none;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero h1 {
+        max-width: 900px;
+        margin: 0 auto 24px auto;
+        line-height: 1.1;
+      }
+
+      .hero .subtitle {
+        font-size: 1.25rem;
+        max-width: 800px;
+        margin: 0 auto 48px auto;
+        color: var(--text-medium);
+        line-height: 1.6;
+      }
+
+      .interactive-form {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+        max-width: 700px;
+        margin: 0 auto;
+        background: var(--background-color);
+        padding: 8px;
+        border-radius: 16px;
+        box-shadow: var(--shadow-lg);
+        border: 1px solid var(--border-light);
+      }
+
+      .interactive-form input {
+        flex: 1;
+        padding: 18px 24px;
+        border: 2px solid var(--border-light);
+        border-radius: 12px;
+        font-size: 1rem;
+        background: var(--background-color);
+        transition: all 0.3s ease;
+        outline: none;
+      }
+
+      .interactive-form input:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
+
+      .interactive-form input::placeholder {
+        color: var(--text-light);
+      }
+
+      /* --- How It Works Section --- */
+      .how-it-works {
+        padding: 120px 0;
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        position: relative;
+      }
+
+      .steps-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 48px;
+        text-align: center;
+      }
+
+      .step {
+        position: relative;
+        padding: 40px 24px;
+        background: var(--background-color);
+        border-radius: 20px;
+        box-shadow: var(--shadow-md);
+        transition: all 0.3s ease;
+        border: 1px solid var(--border-light);
+      }
+
+      .step:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-xl);
+      }
+
+      .step::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--gradient-primary);
+        border-radius: 20px 20px 0 0;
+      }
+
+      .step-icon {
+        width: 64px;
+        height: 64px;
+        background: var(--gradient-primary);
+        color: white;
+        border-radius: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin: 0 auto 24px auto;
+        box-shadow: var(--shadow-md);
+      }
+
+      .step h3 {
+        margin-bottom: 16px;
+        color: var(--text-dark);
+      }
+
+      .step p {
+        color: var(--text-medium);
+        line-height: 1.6;
+      }
+
+      /* --- Features Section --- */
+      .features {
+        padding: 120px 0;
+        background: var(--background-color);
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 48px;
+      }
+
+      .feature-card {
+        background: var(--background-color);
+        border: 1px solid var(--border-light);
+        padding: 40px 32px;
+        border-radius: 20px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .feature-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--gradient-accent);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+      }
+
+      .feature-card:hover::before {
+        transform: scaleX(1);
+      }
+
+      .feature-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-xl);
+        border-color: var(--primary-color);
+      }
+
+      .feature-icon {
+        font-size: 3rem;
+        margin-bottom: 24px;
+        display: block;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+      }
+
+      .feature-card h3 {
+        margin-bottom: 16px;
+        color: var(--text-dark);
+      }
+
+      .feature-card p {
+        color: var(--text-medium);
+        line-height: 1.6;
+      }
+
+      /* --- Final CTA Section --- */
+      .final-cta {
+        background: var(--gradient-primary);
+        padding: 120px 0;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .final-cta::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+        pointer-events: none;
+      }
+
+      .final-cta-content {
+        position: relative;
+        z-index: 1;
+      }
+
+      .final-cta h2 {
+        margin-bottom: 32px;
+        color: white;
+        font-size: clamp(2rem, 4vw, 3rem);
+      }
+
+      .final-cta .btn-large {
+        background: white;
+        color: var(--primary-color);
+        box-shadow: var(--shadow-xl);
+      }
+
+      .final-cta .btn-large:hover {
+        background: var(--primary-light);
+        transform: translateY(-4px);
+      }
+
+      .cta-subtext {
+        margin-top: 24px;
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      /* --- Footer --- */
+      .footer {
+        padding: 64px 0 32px 0;
+        background: var(--text-dark);
+        color: var(--text-light);
+      }
+
+      .footer .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 24px;
+      }
+
+      .footer-links {
+        list-style: none;
+        display: flex;
+        gap: 32px;
+        padding-left: 0;
+        flex-wrap: wrap;
+      }
+
+      .footer-links a {
+        color: var(--text-light);
+        transition: color 0.3s ease;
+      }
+
+      .footer-links a:hover {
+        color: white;
+      }
+
+      /* --- Responsive Design --- */
+      @media (max-width: 1024px) {
+        .container {
+          padding: 0 20px;
+        }
+
+        .steps-grid,
+        .features-grid {
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 32px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 0 16px;
+        }
+
+        .hero {
+          padding: 80px 0;
+        }
+
+        .how-it-works,
+        .features {
+          padding: 80px 0;
+        }
+
+        .final-cta {
+          padding: 80px 0;
+        }
+
+        /* --- Mobile Navigation --- */
+        .hamburger {
+          display: flex;
+        }
+
+        .nav-links {
+          position: fixed;
+          right: -100%;
+          top: 0;
+          flex-direction: column;
+          background: rgba(255, 255, 255, 0.98);
+          backdrop-filter: blur(20px);
+          width: 80%;
+          max-width: 320px;
+          height: 100vh;
+          padding: 80px 24px 24px 24px;
+          text-align: left;
+          transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+          z-index: 1001;
+        }
+
+        .nav-links.nav-active {
+          right: 0;
+        }
+
+        .nav-links li {
+          padding: 12px 0;
+          border-bottom: 1px solid var(--border-light);
+        }
+
+        .nav-links li:last-child {
+          border-bottom: none;
+        }
+
+        .nav-links a.login-btn,
+        .nav-links a.btn {
+          width: 100%;
+          margin: 8px 0;
+          justify-content: center;
+        }
+
+        .nav-links a.login-btn {
+          background: var(--primary-light);
+          border: 2px solid var(--primary-color);
+          color: var(--primary-color);
+        }
+
+        /* --- Layout Adjustments --- */
+        .steps-grid,
+        .features-grid {
+          grid-template-columns: 1fr;
+          gap: 24px;
+        }
+
+        .interactive-form {
+          flex-direction: column;
+          gap: 12px;
+          padding: 16px;
+        }
+
+        .interactive-form input {
+          text-align: center;
+          padding: 16px 20px;
+        }
+
+        .interactive-form button {
+          width: 100%;
+        }
+
+        .footer .container {
+          flex-direction: column;
+          text-align: center;
+          gap: 24px;
+        }
+
+        .footer-links {
+          justify-content: center;
+          gap: 24px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .hero {
+          padding: 60px 0;
+        }
+
+        .step,
+        .feature-card {
+          padding: 24px 20px;
+        }
+
+        .interactive-form {
+          margin: 0 8px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <nav class="navbar">
+          <a href="#" class="logo">Digital Lawyer AI</a>
+          <ul class="nav-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#">Pricing</a></li>
+            <li>
+              <a href="{{ url_for('login') }}" class="login-btn">Log In</a>
+            </li>
+            <li>
+              <a href="{{ url_for('register') }}" class="btn btn-primary"
+                >Sign Up</a
+              >
+            </li>
+          </ul>
+          <div class="hamburger">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container">
+          <div class="hero-content">
+            <h1>Navigate Georgian Law with Confidence.</h1>
+            <p class="subtitle">
+              Your AI-powered legal assistant for instant document analysis and
+              expert answers. Fluent in Georgian, English, and Russian.
+            </p>
+            <div class="interactive-form">
+              <input
+                type="text"
+                placeholder="e.g., Ask about contract termination clauses..."
+              />
+              <button id="cta-button" class="btn btn-primary">
+                Get Your Answer
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="how-it-works">
+        <div class="container">
+          <h2>Get Legal Clarity in Seconds</h2>
+          <div class="steps-grid">
+            <div class="step">
+              <div class="step-icon">1</div>
+              <h3>Upload or Ask</h3>
+              <p>
+                Securely upload your legal documents or simply type your
+                question.
+              </p>
+            </div>
+            <div class="step">
+              <div class="step-icon">2</div>
+              <h3>AI Analyzes</h3>
+              <p>
+                Our intelligent system analyzes your query against Georgian law
+                and your documents in real-time.
+              </p>
+            </div>
+            <div class="step">
+              <div class="step-icon">3</div>
+              <h3>Receive Insight</h3>
+              <p>
+                Get a clear, concise summary, key insights, and actionable
+                answers.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="features" class="features">
+        <div class="container">
+          <h2>Your All-In-One Legal Co-pilot</h2>
+          <div class="features-grid">
+            <div class="feature-card">
+              <div class="feature-icon">📄</div>
+              <h3>Intelligent Document Analysis</h3>
+              <p>
+                Stop drowning in paperwork. Upload contracts or legal notices,
+                and our AI will extract key clauses, identify risks, and provide
+                a plain-language summary.
+              </p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">💬</div>
+              <h3>Instant AI Consultation</h3>
+              <p>
+                Have a legal question? Get immediate, reliable answers based on
+                up-to-date Georgian legal frameworks. It's like having a legal
+                expert on call 24/7.
+              </p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🔒</div>
+              <h3>Enterprise-Grade Security</h3>
+              <p>
+                Your privacy is our priority. All documents and conversations
+                are encrypted and stored with the highest level of security.
+                Your data is always yours.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="final-cta">
+        <div class="container">
+          <div class="final-cta-content">
+            <h2>Ready to Simplify Your Legal Work?</h2>
+            <a
+              href="{{ url_for('register') }}"
+              class="btn btn-primary btn-large"
+              >Create Your Free Account</a
+            >
+            <p class="cta-subtext">
+              No credit card required. Get started in 30 seconds.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p>&copy; 2025 Digital Lawyer AI. All rights reserved.</p>
+        <ul class="footer-links">
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+    </footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // --- Mobile Navigation Toggle ---
+        const hamburger = document.querySelector(".hamburger");
+        const navLinks = document.querySelector(".nav-links");
+
+        hamburger.addEventListener("click", () => {
+          navLinks.classList.toggle("nav-active");
+        });
+
+        // Close menu when a link is clicked
+        document.querySelectorAll(".nav-links li a").forEach((link) => {
+          link.addEventListener("click", () => {
+            navLinks.classList.remove("nav-active");
+          });
+        });
+
+        // --- Smooth Scroll for Hero Button ---
+        const ctaButton = document.getElementById("cta-button");
+        const featuresSection = document.getElementById("features");
+
+        if (ctaButton && featuresSection) {
+          ctaButton.addEventListener("click", function (event) {
+            event.preventDefault();
+            featuresSection.scrollIntoView({ behavior: "smooth" });
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

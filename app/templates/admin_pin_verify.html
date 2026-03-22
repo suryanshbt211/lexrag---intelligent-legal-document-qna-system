@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin PIN Verification - Digital Lawyer</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .container {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        width: 100%;
+        max-width: 450px;
+        text-align: center;
+      }
+
+      .logo {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 50%;
+        margin: 0 auto 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      h1 {
+        color: #333;
+        margin-bottom: 10px;
+        font-size: 28px;
+        font-weight: 600;
+      }
+
+      .subtitle {
+        color: #666;
+        margin-bottom: 30px;
+        font-size: 16px;
+      }
+
+      .form-group {
+        margin-bottom: 25px;
+        text-align: left;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: #333;
+        font-weight: 500;
+        font-size: 14px;
+      }
+
+      .pin-input {
+        width: 100%;
+        padding: 15px;
+        border: 2px solid #e1e5e9;
+        border-radius: 10px;
+        font-size: 18px;
+        text-align: center;
+        letter-spacing: 8px;
+        transition: all 0.3s ease;
+        font-family: "Courier New", monospace;
+      }
+
+      .pin-input:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+
+      .pin-input::placeholder {
+        letter-spacing: normal;
+        color: #999;
+      }
+
+      .btn {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-bottom: 20px;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+      }
+
+      .btn:active {
+        transform: translateY(0);
+      }
+
+      .error {
+        background: #fee;
+        color: #c33;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        border-left: 4px solid #c33;
+        font-size: 14px;
+      }
+
+      .info {
+        background: #f0f8ff;
+        color: #0066cc;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        border-left: 4px solid #0066cc;
+        font-size: 14px;
+      }
+
+      .back-link {
+        color: #667eea;
+        text-decoration: none;
+        font-size: 14px;
+        transition: color 0.3s ease;
+      }
+
+      .back-link:hover {
+        color: #764ba2;
+      }
+
+      .security-info {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 20px;
+        text-align: left;
+      }
+
+      .security-info h3 {
+        color: #333;
+        margin-bottom: 10px;
+        font-size: 16px;
+      }
+
+      .security-info p {
+        color: #666;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .pin-format {
+        color: #999;
+        font-size: 12px;
+        margin-top: 5px;
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          padding: 30px 20px;
+        }
+
+        h1 {
+          font-size: 24px;
+        }
+
+        .pin-input {
+          font-size: 16px;
+          letter-spacing: 6px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="logo">🔐</div>
+      <h1>Admin PIN Verification</h1>
+      <p class="subtitle">Enter your 8-digit PIN to complete admin login</p>
+
+      {% if error %}
+      <div class="error">{{ error }}</div>
+      {% endif %}
+
+      <div class="info">
+        <strong>Security Notice:</strong> Enter your 8-digit admin PIN to access
+        the admin panel.
+      </div>
+
+      <form method="POST">
+        <div class="form-group">
+          <label for="pin">Admin PIN</label>
+          <input
+            type="password"
+            id="pin"
+            name="pin"
+            class="pin-input"
+            placeholder="Enter 8-digit PIN"
+            maxlength="8"
+            pattern="[0-9]{8}"
+            required
+            autocomplete="off"
+          />
+          <div class="pin-format">Must be exactly 8 digits</div>
+        </div>
+
+        <button type="submit" class="btn">Verify PIN</button>
+      </form>
+
+      <a href="{{ url_for('login') }}" class="back-link">← Back to Login</a>
+
+      <div class="security-info">
+        <h3>🔒 Security Information</h3>
+        <p>
+          Your admin PIN is required for additional security. After 3 failed
+          attempts, your session will be locked for security reasons.
+        </p>
+      </div>
+    </div>
+
+    <script>
+      // Auto-focus on PIN input
+      document.getElementById("pin").focus();
+
+      // Format PIN input (only allow numbers)
+      document.getElementById("pin").addEventListener("input", function (e) {
+        // Remove any non-numeric characters
+        this.value = this.value.replace(/[^0-9]/g, "");
+
+        // Limit to 8 digits
+        if (this.value.length > 8) {
+          this.value = this.value.slice(0, 8);
+        }
+      });
+
+      // Auto-submit when 8 digits are entered
+      document.getElementById("pin").addEventListener("input", function (e) {
+        if (this.value.length === 8) {
+          // Small delay to show the complete PIN
+          setTimeout(() => {
+            this.form.submit();
+          }, 500);
+        }
+      });
+
+      // Prevent form submission if PIN is not 8 digits
+      document.querySelector("form").addEventListener("submit", function (e) {
+        const pin = document.getElementById("pin").value;
+        if (pin.length !== 8) {
+          e.preventDefault();
+          alert("Please enter exactly 8 digits for your PIN.");
+          document.getElementById("pin").focus();
+        }
+      });
+    </script>
+  </body>
+</html>

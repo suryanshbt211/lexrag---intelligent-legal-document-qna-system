@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin OTP Verification - Digital Lawyer</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .otp-container {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+      }
+
+      .logo {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #667eea;
+        margin-bottom: 1rem;
+      }
+
+      .security-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+      }
+
+      .title {
+        font-size: 1.5rem;
+        color: #333;
+        margin-bottom: 1rem;
+      }
+
+      .subtitle {
+        color: #666;
+        margin-bottom: 2rem;
+        line-height: 1.5;
+      }
+
+      .otp-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .otp-input {
+        padding: 1rem;
+        border: 2px solid #e1e5e9;
+        border-radius: 8px;
+        font-size: 1.2rem;
+        text-align: center;
+        letter-spacing: 0.5rem;
+        font-weight: bold;
+        transition: border-color 0.3s ease;
+      }
+
+      .otp-input:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+
+      .submit-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 1rem;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+      }
+
+      .submit-btn:hover {
+        transform: translateY(-2px);
+      }
+
+      .submit-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .error-message {
+        background: #fee;
+        color: #c33;
+        padding: 0.75rem;
+        border-radius: 8px;
+        border: 1px solid #fcc;
+        margin-bottom: 1rem;
+      }
+
+      .help-text {
+        color: #888;
+        font-size: 0.9rem;
+        margin-top: 1rem;
+      }
+
+      .back-link {
+        color: #667eea;
+        text-decoration: none;
+        margin-top: 1rem;
+        display: inline-block;
+      }
+
+      .back-link:hover {
+        text-decoration: underline;
+      }
+
+      .timer {
+        color: #666;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+      }
+
+      .resend-link {
+        color: #667eea;
+        text-decoration: none;
+        cursor: pointer;
+        margin-top: 0.5rem;
+        display: inline-block;
+      }
+
+      .resend-link:hover {
+        text-decoration: underline;
+      }
+
+      .resend-link.disabled {
+        color: #ccc;
+        cursor: not-allowed;
+      }
+
+      .email-info {
+        background: #e3f2fd;
+        color: #1976d2;
+        padding: 1rem;
+        border-radius: 8px;
+        border: 1px solid #bbdefb;
+        margin: 1rem 0;
+        text-align: center;
+      }
+
+      .email-info strong {
+        color: #1565c0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="otp-container">
+      <div class="logo">🔐</div>
+      <h1 class="title">Admin OTP Verification</h1>
+
+      <div class="email-info">
+        <strong>📧 OTP Sent To:</strong><br />
+        {{ admin_email }}
+      </div>
+
+      <p class="subtitle">
+        A one-time password has been sent to your admin email address. Please
+        check your email and enter the OTP to complete your login.
+      </p>
+
+      {% if error %}
+      <div class="error-message">{{ error }}</div>
+      {% endif %}
+
+      <form class="otp-form" method="POST">
+        <input
+          type="text"
+          name="otp"
+          class="otp-input"
+          placeholder="000000"
+          maxlength="6"
+          pattern="[0-9]{6}"
+          required
+          autocomplete="off"
+          autofocus
+        />
+        <button type="submit" class="submit-btn">Verify OTP</button>
+      </form>
+
+      <div class="help-text">
+        <p>🔐 The OTP is valid for 10 minutes</p>
+        <p>📱 Check your email for the 6-digit code</p>
+        <p>📧 Email: {{ admin_email }}</p>
+      </div>
+
+      <div class="timer"><span id="countdown">10:00</span> remaining</div>
+
+      <a href="/admin/otp-display" class="resend-link" id="resendLink">
+        Display OTP (Development)
+      </a>
+
+      <br />
+      <a href="/login" class="back-link">← Back to Login</a>
+    </div>
+
+    <script>
+      // Countdown timer
+      let timeLeft = 600; // 10 minutes in seconds
+
+      function updateCountdown() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        document.getElementById("countdown").textContent = `${minutes}:${seconds
+          .toString()
+          .padStart(2, "0")}`;
+
+        if (timeLeft <= 0) {
+          document.getElementById("countdown").textContent = "Expired";
+          document.getElementById("resendLink").classList.add("disabled");
+          document.getElementById("resendLink").textContent = "OTP Expired";
+        } else {
+          timeLeft--;
+          setTimeout(updateCountdown, 1000);
+        }
+      }
+
+      // Start countdown
+      updateCountdown();
+
+      // Auto-format OTP input
+      document
+        .querySelector(".otp-input")
+        .addEventListener("input", function (e) {
+          let value = e.target.value.replace(/\D/g, ""); // Remove non-digits
+          if (value.length > 6) value = value.slice(0, 6); // Limit to 6 digits
+          e.target.value = value;
+        });
+
+      // Auto-submit when 6 digits are entered
+      document
+        .querySelector(".otp-input")
+        .addEventListener("input", function (e) {
+          if (e.target.value.length === 6) {
+            document.querySelector(".submit-btn").click();
+          }
+        });
+    </script>
+  </body>
+</html>

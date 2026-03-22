@@ -1,0 +1,22 @@
+# Security packages for enhanced admin authentication
+# Install these packages: pip install -r requirements_security.txt
+
+# OTP (One-Time Password) generation and verification
+pyotp==2.9.0
+
+# Enhanced password hashing (already included with bcrypt)
+bcrypt==4.0.1
+
+# Secure random number generation (built-in with Python 3.6+)
+# secrets module is built-in
+
+# Additional security recommendations:
+# - Use HTTPS in production
+# - Implement rate limiting
+# - Use environment variables for secrets
+# - Regular security audits
+# - Keep dependencies updated
+
+# Optional: For production deployment
+# gunicorn==21.2.0  # Production WSGI server
+# python-dotenv==1.0.0  # Environment variable management
